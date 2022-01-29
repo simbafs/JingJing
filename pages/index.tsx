@@ -1,23 +1,30 @@
-import type { NextPage } from 'next'
-import { FormEventHandler, useState } from 'react'
-import style from '../styles/container.module.scss'
+import type { NextPage } from 'next';
+import { useState } from 'react';
+import useSWR from 'swr';
+
+import style from '../styles/container.module.scss';
+
+interface Props {
+	input: string;
+}
+
+const Output = ({ input }: Props) => {
+	const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
+	if(error) return <pre>{JSON.stringify(error)}</pre>;
+	if(!data) return <div>loading...</div>;
+	return <div>{data.result}</div>;
+}
 
 const Home: NextPage = () => {
-	const [text, setText] = useState('')
-
-	const handleSubmit: FormEventHandler = (e) => {
-		e.preventDefault()
-	}
+	const [input, setInput] = useState('');
 
 	return (
 		<div className={style.container}>
-			<form action="/test" method="post" onSubmit={handleSubmit}>
-				<h1>Hello Next.js</h1>
-				<input type="text" value={text} onChange={(e) => setText(e.target.value)}/>
-				<button type="submit">Send</button>
-			</form>
+			<h1>Hello Next.js</h1>
+			<input type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
+			<Output input={input}/>
 		</div>
-	)
+	);
 }
 
-export default Home
+export default Home;
