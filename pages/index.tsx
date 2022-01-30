@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
-import { useState } from 'react';
+
 import useSWR from 'swr';
+import useLocalStorage from '../lib/useLocalstore';
 
 import style from '../styles/container.module.scss';
 
@@ -10,18 +11,17 @@ interface Props {
 
 const Output = ({ input }: Props) => {
 	const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
-	if(error) return <pre>{JSON.stringify(error)}</pre>;
-	if(!data) return <div>loading...</div>;
+	if(error) return <pre>Error: {JSON.stringify(error)}</pre>;
+	if(!data) return <div>Loading...</div>;
 	return <div>{data.result}</div>;
 }
 
 const Home: NextPage = () => {
-	const [input, setInput] = useState('');
+	const [input, setInput] = useLocalStorage('input', '');
 
 	return (
 		<div className={style.container}>
-			<h1>Hello Next.js</h1>
-			<input type="text" value={input} onChange={(e) => setInput(e.target.value)}/>
+			<textarea value={input} onChange={(e) => setInput(e.target.value)}/>
 			<Output input={input}/>
 		</div>
 	);

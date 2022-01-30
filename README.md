@@ -4,7 +4,7 @@
 
 # TODO
 - [ ] move translate  API from server to client
-- [ ] add cache to translate api
+- [x] add cache to translate api
 - [ ] add rating db in translate api
 - [ ] auto hyphenation
 - [ ] finish UI
