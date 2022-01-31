@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 
 import useSWR from 'swr';
-import useLocalStorage from '../lib/useLocalstore';
+import { useLocalStorage } from '../lib/useLocalstore';
 
 import style from '../styles/container.module.scss';
 
