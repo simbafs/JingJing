@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { ReactEventHandler } from 'react';
 
 import useSWR from 'swr';
 import { useLocalStorage } from '../lib/useLocalstore';
@@ -19,9 +20,19 @@ const Output = ({ input }: Props) => {
 const Home: NextPage = () => {
 	const [input, setInput] = useLocalStorage('input', '');
 
+	const handleSelect: ReactEventHandler<HTMLTextAreaElement> = (e) => {
+		const selection = window.getSelection();
+		if(selection && selection.anchorNode === selection.focusNode) {
+			const target = e.target as HTMLTextAreaElement;
+			const start = target.selectionStart;
+			const end = target.selectionEnd;
+			console.log(target.value.slice(start, end));
+		}
+	}
+
 	return (
 		<div className={style.container}>
-			<textarea className={style.input} value={input} onChange={(e) => setInput(e.target.value)}/>
+			<textarea className={style.input} value={input} onChange={(e) => setInput(e.target.value)} onSelect={handleSelect}/>
 			<Output input={input}/>
 		</div>
 	);
