@@ -14,8 +14,7 @@
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"sass": "^1.49.0",
-		"swr": "^1.2.0",
-		"tls": "^0.0.1"
+		"swr": "^1.2.0"
 	},
 	"devDependencies": {
 		"@types/node": "17.0.13",
