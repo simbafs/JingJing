@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 import useSWR from 'swr';
 import { useLocalStorage } from '../lib/useLocalstore';
 
-import style from '../styles/container.module.scss';
+import style from '../styles/index.module.scss';
 
 interface Props {
 	input: string;
@@ -11,9 +11,9 @@ interface Props {
 
 const Output = ({ input }: Props) => {
 	const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
-	if(error) return <pre>Error: {JSON.stringify(error)}</pre>;
-	if(!data) return <div>Loading...</div>;
-	return <div>{data.result}</div>;
+	if(error) return <pre className={style.error}>Error: {JSON.stringify(error)}</pre>;
+	if(!data) return <h2 className={style.output}>Loading...</h2>;
+	return <h2 className={style.output}>{data.result}</h2>;
 }
 
 const Home: NextPage = () => {
@@ -21,7 +21,7 @@ const Home: NextPage = () => {
 
 	return (
 		<div className={style.container}>
-			<textarea value={input} onChange={(e) => setInput(e.target.value)}/>
+			<textarea className={style.input} value={input} onChange={(e) => setInput(e.target.value)}/>
 			<Output input={input}/>
 		</div>
 	);
