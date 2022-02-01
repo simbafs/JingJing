@@ -2,7 +2,8 @@ import type { NextPage } from 'next';
 import { ReactEventHandler } from 'react';
 
 import useSWR from 'swr';
-import { useLocalStorage } from '../lib/useLocalstore';
+import useLocalStorage from '../lib/useLocalstore';
+import getSelection from '../lib/getSelection';
 
 import style from '../styles/index.module.scss';
 
@@ -20,19 +21,27 @@ const Output = ({ input }: Props) => {
 const Home: NextPage = () => {
 	const [input, setInput] = useLocalStorage('input', '');
 
-	const handleSelect: ReactEventHandler<HTMLTextAreaElement> = (e) => {
-		const selection = window.getSelection();
-		if(selection && selection.anchorNode === selection.focusNode) {
-			const target = e.target as HTMLTextAreaElement;
-			const start = target.selectionStart;
-			const end = target.selectionEnd;
-			console.log(target.value.slice(start, end));
-		}
+	// const handleSelect: ReactEventHandler<HTMLTextAreaElement> = (e) => {
+	//     const selection = window.getSelection();
+	//     if(selection && selection.anchorNode === selection.focusNode) {
+	//         console.log(getSelection(e.target as HTMLTextAreaElement));
+	//     }
+	// }
+
+	const handleContext: ReactEventHandler<HTMLTextAreaElement> = (e) => {
+		console.log(getSelection(e.target as HTMLTextAreaElement));
+		e.preventDefault();
 	}
 
 	return (
 		<div className={style.container}>
-			<textarea className={style.input} value={input} onChange={(e) => setInput(e.target.value)} onSelect={handleSelect}/>
+			<textarea
+				className={style.input}
+				value={input}
+				onChange={(e) => setInput(e.target.value)}
+				// onSelect={handleSelect}
+				onContextMenu={handleContext}
+			/>
 			<Output input={input}/>
 		</div>
 	);
