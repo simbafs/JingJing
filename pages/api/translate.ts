@@ -12,7 +12,7 @@ async function cachedTranslate(text: string): Promise<string>{
 		try{
 			let result = await translate(text, {to: 'en'});
 			cache.set(text, result.text);
-			return text;
+			return result.text;
 		}catch(e){
 			throw e;
 		}
