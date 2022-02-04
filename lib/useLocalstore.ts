@@ -1,4 +1,15 @@
 // Copy from https://usehooks.com/useLocalStorage/
+// BUG: it wouldn't load at the first time, use the following code to fix it
+////////////////////////////////////////////////////////////////////////////////
+// const [input, setInput] = useLocalStorage('input', '');
+// const [t, setT] = useState('');
+//
+// useEffect(()=> {
+//     setT(() => input);
+// }, [input]);
+//
+// // use t
+////////////////////////////////////////////////////////////////////////////////
 
 import { useState } from 'react';
 
@@ -9,7 +20,6 @@ export default function useLocalStorage<T>(key: string, initialValue: T) {
 		try {
 			// Get from local storage by key
 			const item = window.localStorage.getItem(key);
-			console.log('Value', item);
 			// Parse stored json or if none return initialValue
 			return item ? JSON.parse(item) : initialValue;
 		} catch (error) {

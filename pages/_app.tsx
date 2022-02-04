@@ -2,6 +2,8 @@ import '../styles/style.css'
 import Head from 'next/head'
 import type { AppProps } from 'next/app'
 
+import style from '../styles/index.module.scss';
+
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<>
@@ -10,7 +12,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 				<meta name="description" content="晶晶體產生器 JingJing Generator" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<Component {...pageProps} />
+			<div className={style.container}>
+				<Component {...pageProps} />
+			</div>
 		</>
 	)
 }

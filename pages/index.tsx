@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { ReactEventHandler } from 'react';
+import { MouseEventHandler, useEffect, useState } from 'react';
 
 import useSWR from 'swr';
 import useLocalStorage from '../lib/useLocalstore';
@@ -20,30 +20,36 @@ const Output = ({ input }: Props) => {
 
 const Home: NextPage = () => {
 	const [input, setInput] = useLocalStorage('input', '');
+	const [t, setT] = useState('');
 
-	// const handleSelect: ReactEventHandler<HTMLTextAreaElement> = (e) => {
-	//     const selection = window.getSelection();
-	//     if(selection && selection.anchorNode === selection.focusNode) {
-	//         console.log(getSelection(e.target as HTMLTextAreaElement));
-	//     }
-	// }
+	useEffect(()=> {
+		setT(() => input);
+	}, [input]);
 
-	const handleContext: ReactEventHandler<HTMLTextAreaElement> = (e) => {
-		console.log(getSelection(e.target as HTMLTextAreaElement));
+	const handleContext: MouseEventHandler<HTMLTextAreaElement> = (e) => {
+		const selection = getSelection(e.target as HTMLTextAreaElement);
+		// console.log(`translating ${selection}`);
+
+		fetch(`/api/translate?t=${selection}`)
+		.then(res => res.json())
+		.then(data => {
+			console.log(data.result)
+			// console.log(selection, data.result)
+		});
+
 		e.preventDefault();
 	}
 
 	return (
-		<div className={style.container}>
+		<>
 			<textarea
 				className={style.input}
-				value={input}
+				value={t}
 				onChange={(e) => setInput(e.target.value)}
-				// onSelect={handleSelect}
 				onContextMenu={handleContext}
 			/>
 			<Output input={input}/>
-		</div>
+		</>
 	);
 }
 
