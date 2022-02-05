@@ -1,23 +1,23 @@
 import type { NextPage } from 'next';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, KeyboardEventHandler, useEffect, useState } from 'react';
 
-import useSWR from 'swr';
+// import useSWR from 'swr';
 import useLocalStorage from '../lib/useLocalstore';
 import getSelection from '../lib/getSelection';
 
 import style from '../styles/index.module.scss';
 
-interface Props {
-	input: string;
-}
-
-const Output = ({ input }: Props) => {
-	const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
-	if(error) return <pre className={style.error}>Error: {JSON.stringify(error)}</pre>;
-	if(!data) return <h2 className={style.output}>Loading...</h2>;
-	return <h2 className={style.output}>{data.result}</h2>;
-}
-
+// interface Props {
+//     input: string;
+// }
+//
+// const Output = ({ input }: Props) => {
+//     const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
+//     if(error) return <pre className={style.error}>Error: {JSON.stringify(error)}</pre>;
+//     if(!data) return <h2 className={style.output}>Loading...</h2>;
+//     return <h2 className={style.output}>{data.result}</h2>;
+// }
+//
 const Home: NextPage = () => {
 	const [input, setInput] = useLocalStorage('input', '');
 	const [t, setT] = useState('');
@@ -27,13 +27,19 @@ const Home: NextPage = () => {
 	}, [input]);
 
 	const handleContext: MouseEventHandler<HTMLTextAreaElement> = (e) => {
-		const selection = getSelection(e.target as HTMLTextAreaElement);
+		const target = e.target as HTMLTextAreaElement;
+		const [selection, start, end] = getSelection(target);
 		// console.log(`translating ${selection}`);
 
 		fetch(`/api/translate?t=${selection}`)
 		.then(res => res.json())
 		.then(data => {
-			console.log(data.result)
+			const text: string = data.result;
+			const origin = target.value;
+			// console.log(data.result, start, end)
+			const final = `${origin.slice(0, start)} ${text} ${origin.slice(end)}`.trim();
+			console.log(final);
+			setInput(() => final);
 			// console.log(selection, data.result)
 		});
 
@@ -48,7 +54,7 @@ const Home: NextPage = () => {
 				onChange={(e) => setInput(e.target.value)}
 				onContextMenu={handleContext}
 			/>
-			<Output input={input}/>
+			{/*<Output input={input}/>*/}
 		</>
 	);
 }
