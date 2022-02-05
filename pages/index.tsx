@@ -1,25 +1,14 @@
 import type { NextPage } from 'next';
 import { MouseEventHandler, KeyboardEventHandler, useEffect, useState } from 'react';
 
-// import useSWR from 'swr';
 import useLocalStorage from '../lib/useLocalstore';
 import getSelection from '../lib/getSelection';
 import tidyString from '../lib/tidyString';
 
 import style from '../styles/index.module.scss';
 
-// interface Props {
-//     input: string;
-// }
-//
-// const Output = ({ input }: Props) => {
-//     const { data, error } = useSWR(`/api/translate?t=${input}`, url => fetch(url).then(res => res.json()));
-//     if(error) return <pre className={style.error}>Error: {JSON.stringify(error)}</pre>;
-//     if(!data) return <h2 className={style.output}>Loading...</h2>;
-//     return <h2 className={style.output}>{data.result}</h2>;
-// }
-//
 const Home: NextPage = () => {
+	// issue #1
 	const [input, setInput] = useLocalStorage('input', '');
 	const [t, setT] = useState('');
 
@@ -39,11 +28,9 @@ const Home: NextPage = () => {
 		.then(data => {
 			const text: string = data.result;
 			const origin = target.value;
-			// console.log(data.result, start, end)
 			const final = tidyString(origin.slice(0, start) + ' ' + text + ' ' + origin.slice(end));
 			console.log(final);
 			setInput(() => final);
-			// console.log(selection, data.result)
 		});
 	}
 
@@ -59,12 +46,15 @@ const Home: NextPage = () => {
 				<textarea
 					className={style.input}
 					value={t}
-					onChange={(e) => setInput(e.target.value)}
+					onChange={(e) => setInput(() => e.target.value)}
+					onCompositionUpdate={(e) => setInput(() => e.data)}
 					onContextMenu={handleContext}
 					// onKeyDown={handleKeyDown}
+					// onCompositionStart={(e) => console.log('compositionStart', e.data, e.target.value)}
+					// onCompositionEnd={(e) => console.log('compositionEnd', e.data, e.target.value)}
+					// onCompositionUpdate={(e) => console.log('compositionUpdate', e.data, e.target.value)}
 				/>
 			</div>
-			{/*<Output input={input}/>*/}
 		</>
 	);
 }
