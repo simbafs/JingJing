@@ -4,6 +4,7 @@ import { MouseEventHandler, KeyboardEventHandler, useEffect, useState } from 're
 // import useSWR from 'swr';
 import useLocalStorage from '../lib/useLocalstore';
 import getSelection from '../lib/getSelection';
+import tidyString from '../lib/tidyString';
 
 import style from '../styles/index.module.scss';
 
@@ -27,9 +28,11 @@ const Home: NextPage = () => {
 	}, [input]);
 
 	const handleContext: MouseEventHandler<HTMLTextAreaElement> = (e) => {
+		e.preventDefault();
+
 		const target = e.target as HTMLTextAreaElement;
 		const [selection, start, end] = getSelection(target);
-		// console.log(`translating ${selection}`);
+		if(!selection.trim()) return;
 
 		fetch(`/api/translate?t=${selection}`)
 		.then(res => res.json())
@@ -37,13 +40,11 @@ const Home: NextPage = () => {
 			const text: string = data.result;
 			const origin = target.value;
 			// console.log(data.result, start, end)
-			const final = `${origin.slice(0, start)} ${text} ${origin.slice(end)}`.trim();
+			const final = tidyString(origin.slice(0, start) + ' ' + text + ' ' + origin.slice(end));
 			console.log(final);
 			setInput(() => final);
 			// console.log(selection, data.result)
 		});
-
-		e.preventDefault();
 	}
 
 	// const handleKeyDown:KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
