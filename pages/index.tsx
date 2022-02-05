@@ -46,14 +46,23 @@ const Home: NextPage = () => {
 		e.preventDefault();
 	}
 
+	// const handleKeyDown:KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
+	//     console.log(e.key, e.ctrlKey, e);
+	// }
+
 	return (
 		<>
-			<textarea
-				className={style.input}
-				value={t}
-				onChange={(e) => setInput(e.target.value)}
-				onContextMenu={handleContext}
-			/>
+			<div className={style.card}>
+				<h1>晶晶體產生器</h1>
+				<h2>下方文字框輸入文字，選取後按右鍵可以翻譯選取文字</h2>
+				<textarea
+					className={style.input}
+					value={t}
+					onChange={(e) => setInput(e.target.value)}
+					onContextMenu={handleContext}
+					// onKeyDown={handleKeyDown}
+				/>
+			</div>
 			{/*<Output input={input}/>*/}
 		</>
 	);
