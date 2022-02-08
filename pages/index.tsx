@@ -1,5 +1,5 @@
 import type { NextPage } from 'next';
-import { MouseEventHandler, KeyboardEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, /*KeyboardEventHandler, */useEffect, useState } from 'react';
 
 import useLocalStorage from '../lib/useLocalstore';
 import getSelection from '../lib/getSelection';
@@ -11,6 +11,8 @@ const Home: NextPage = () => {
 	// issue #1
 	const [input, setInput] = useLocalStorage('input', '');
 	const [t, setT] = useState('');
+
+	const [previousInput, setPreviousInput] = useState('');
 
 	useEffect(()=> {
 		setT(() => input);
@@ -46,13 +48,11 @@ const Home: NextPage = () => {
 				<textarea
 					className={style.input}
 					value={t}
-					onChange={(e) => setInput(() => e.target.value)}
-					onCompositionUpdate={(e) => setInput(() => e.data)}
+					onChange={e => setInput(() => e.target.value)}
+					onCompositionUpdate={e => setInput(() => previousInput + e.data)}
+					onCompositionStart={() => setPreviousInput(() => input)}
 					onContextMenu={handleContext}
 					// onKeyDown={handleKeyDown}
-					// onCompositionStart={(e) => console.log('compositionStart', e.data, e.target.value)}
-					// onCompositionEnd={(e) => console.log('compositionEnd', e.data, e.target.value)}
-					// onCompositionUpdate={(e) => console.log('compositionUpdate', e.data, e.target.value)}
 				/>
 			</div>
 		</>
