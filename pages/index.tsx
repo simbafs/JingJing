@@ -9,14 +9,20 @@ import style from '../styles/index.module.scss';
 
 const Home: NextPage = () => {
 	// issue #1
-	const [input, setInput] = useLocalStorage('input', '');
-	const [t, setT] = useState('');
+	const [input, setInput] = useState(() => {
+		try {
+			const item = window.localStorage.getItem('input');
+			return item ? item : '';
+		} catch (e) {
+			return '';
+		}
+	});
 
-	const [previousInput, setPreviousInput] = useState('');
-
-	useEffect(()=> {
-		setT(() => input);
+	useEffect(() => {
+		window.localStorage.setItem('input', input);
 	}, [input]);
+
+	// const [previousInput, setPreviousInput] = useState(input);
 
 	const handleContext: MouseEventHandler<HTMLTextAreaElement> = (e) => {
 		e.preventDefault();
@@ -39,6 +45,8 @@ const Home: NextPage = () => {
 	// const handleKeyDown:KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
 	//     console.log(e.key, e.ctrlKey, e);
 	// }
+	
+	console.log({input})
 
 	return (
 		<>
@@ -47,10 +55,10 @@ const Home: NextPage = () => {
 				<h2>下方文字框輸入文字，選取後按右鍵可以翻譯選取文字</h2>
 				<textarea
 					className={style.input}
-					value={t}
+					value={input}
 					onChange={e => setInput(() => e.target.value)}
-					onCompositionUpdate={e => setInput(() => previousInput + e.data)}
-					onCompositionStart={() => setPreviousInput(() => input)}
+					// onCompositionUpdate={e => setInput(() => previousInput + e.data)}
+					// onCompositionStart={() => setPreviousInput(() => input)}
 					onContextMenu={handleContext}
 					// onKeyDown={handleKeyDown}
 				/>
