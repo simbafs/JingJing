@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import { MouseEventHandler, /*KeyboardEventHandler, */useEffect, useState } from 'react';
 
-import useLocalStorage from '../lib/useLocalstore';
 import getSelection from '../lib/getSelection';
 import tidyString from '../lib/tidyString';
 
