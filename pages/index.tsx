@@ -22,8 +22,6 @@ const Home: NextPage = () => {
 		window.localStorage.setItem('input', input);
 	}, [input]);
 
-	// const [previousInput, setPreviousInput] = useState(input);
-
 	const handleContext: MouseEventHandler<HTMLTextAreaElement> = (e) => {
 		e.preventDefault();
 
@@ -37,7 +35,7 @@ const Home: NextPage = () => {
 			const text: string = data.result;
 			const origin = target.value;
 			const final = tidyString(origin.slice(0, start) + ' ' + text + ' ' + origin.slice(end));
-			console.log(final);
+			// console.log(final);
 			setInput(() => final);
 		});
 	}
@@ -45,8 +43,6 @@ const Home: NextPage = () => {
 	// const handleKeyDown:KeyboardEventHandler<HTMLTextAreaElement> = (e) => {
 	//     console.log(e.key, e.ctrlKey, e);
 	// }
-	
-	console.log({input})
 
 	return (
 		<>
@@ -57,10 +53,7 @@ const Home: NextPage = () => {
 					className={style.input}
 					value={input}
 					onChange={e => setInput(() => e.target.value)}
-					// onCompositionUpdate={e => setInput(() => previousInput + e.data)}
-					// onCompositionStart={() => setPreviousInput(() => input)}
 					onContextMenu={handleContext}
-					// onKeyDown={handleKeyDown}
 				/>
 			</div>
 		</>
