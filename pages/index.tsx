@@ -42,14 +42,6 @@ export default function Home() {
 			<meta name="description" content="晶晶體產生器 JingJing Generator" />
 			<link rel="icon" href="/favicon.ico" />
 		</Head>
-		<div className="w-screen p-4">
-			<a
-				className="p-2 bg-sky-600 text-white rounded-lg"
-				href="https://github.com/simbafs/JingJing"
-				target="_blank"
-				rel="noopener noreferrer"
-			>Source Code</a>
-		</div>
 		<div className="h-screen w-screen flex justify-center items-center flex-col">
 			<h1 className="text-6xl">晶晶體產生器</h1>
 			<h2>下方文字框輸入文字，選取後按右鍵可以翻譯選取文字</h2>
@@ -60,6 +52,12 @@ export default function Home() {
 				onContextMenu={handleContext}
 			/>
 		</div>
+		<a
+			className="p-2 bg-sky-600 text-white rounded-lg absolute bottom-0 right-0 m-4"
+			href="https://github.com/simbafs/JingJing"
+			target="_blank"
+			rel="noopener noreferrer"
+		>Source Code</a>
 	</>
 
 }
