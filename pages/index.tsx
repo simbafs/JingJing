@@ -35,7 +35,7 @@ export default function Home() {
 			<h1 className="text-6xl">晶晶體產生器</h1>
 			<h2>下方文字框輸入文字，選取後按右鍵可以翻譯選取文字</h2>
 			<textarea
-				className="border-2 border-gray-600 rounded-lg p-6 min-h-[600px] min-w-[800px]"
+				className="border-2 border-gray-600 rounded-lg p-4 w-[80%] h-[60%]"
 				value={input}
 				onChange={e => setInput(() => e.target.value)}
 				onContextMenu={handleContext}
