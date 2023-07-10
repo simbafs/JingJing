@@ -13,7 +13,8 @@
 		"node-cache": "^5.1.2",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
-		"swr": "^1.2.0"
+		"swr": "^1.2.0",
+		"usehooks-ts": "^2.9.1"
 	},
 	"devDependencies": {
 		"@types/node": "17.0.13",

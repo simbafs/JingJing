@@ -1,23 +1,12 @@
 import Head from 'next/head'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useLocalStorage } from 'usehooks-ts';
 
 import getSelection from '../lib/getSelection';
 import tidyString from '../lib/tidyString';
 
 export default function Home() {
-	// issue #1
-	const [input, setInput] = useState(() => {
-		try {
-			const item = window.localStorage.getItem('input');
-			return item ? item : '';
-		} catch (e) {
-			return '';
-		}
-	});
-
-	useEffect(() => {
-		window.localStorage.setItem('input', input);
-	}, [input]);
+	const [input, setInput] = useLocalStorage('input', '');
 
 	const handleContext = (e: React.MouseEvent<HTMLTextAreaElement>) => {
 		e.preventDefault();
@@ -59,5 +48,4 @@ export default function Home() {
 			rel="noopener noreferrer"
 		>Source Code</a>
 	</>
-
 }
